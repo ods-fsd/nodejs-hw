@@ -41,9 +41,9 @@ app.get('/notes', (req, res) => {
 });
 
 
-app.get('/notes/:id', (req, res) => {
+app.get('/notes/:noteId', (req, res) => {
     res.status(200).json({
-        message: 'Retrieved note with id: ' + req.params.id
+        message: 'Retrieved note with id: ' + req.params.noteId
     });
 });
 
