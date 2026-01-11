@@ -27,6 +27,12 @@ app.use(
     }),
 );
 
+app.get('/', (req, res) => {
+    res.json({
+        message: 'Welcome to the API!'
+    });
+});
+
 app.use((err, req, res, next) => {
     console.error(err);
 
