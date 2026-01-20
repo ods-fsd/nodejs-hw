@@ -8,7 +8,7 @@ import 'dotenv/config';
 const app = express();
 const PORT = process.env.PORT || 3000;
 
-// Middleware для парсингу JSON
+
 app.use(express.json());
 app.use(cors());
 app.use(
@@ -27,14 +27,9 @@ app.use(
     }),
 );
 
-app.use((err, req, res, next) => {
-    console.error(err);
-
-    const isProd = process.env.NODE_ENV === "production";
-
-    res.status(500).json({
-        message: isProd ?
-            "Something went wrong. Please try again later." : err.message,
+app.get('/', (req, res) => {
+    res.json({
+        message: 'Welcome to the API!'
     });
 });
 
@@ -46,9 +41,9 @@ app.get('/notes', (req, res) => {
 });
 
 
-app.get('/notes/:id', (req, res) => {
+app.get('/notes/:noteId', (req, res) => {
     res.status(200).json({
-        message: 'Retrieved note with id: ' + req.params.id
+        message: 'Retrieved note with id: ' + req.params.noteId
     });
 });
 
@@ -63,6 +58,16 @@ app.use((req, res, next) => {
     });
 });
 
+app.use((err, req, res, next) => {
+    console.error(err);
+
+    const isProd = process.env.NODE_ENV === "production";
+
+    res.status(500).json({
+        message: isProd ?
+            "Something went wrong. Please try again later." : err.message,
+    });
+});
 
 app.listen(PORT, () => {
     console.log(`Server is running on port ${PORT}`);
