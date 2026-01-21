@@ -1,15 +1,37 @@
-// src/server.js
 import express from 'express';
 import cors from 'cors';
-import pino from 'pino-http';
 import 'dotenv/config';
+import pino from 'pino-http';
+import notesRoutes from './routes/notesRoutes.js';
+
+import {
+    logger
+} from "./middleware/logger.js";
+import {
+    notFoundHandler
+} from "./middleware/notFoundHandler.js";
+import {
+    errorHandler
+} from "./middleware/errorHandler.js";
+
+import {
+    connectMongoDB
+} from './db/connectMongoDB.js';
+import Note from './models/note.js';
 
 
-const app = express();
 const PORT = process.env.PORT || 3000;
 
+const app = express();
 
-app.use(express.json());
+
+app.use(logger);
+
+app.use(express.json({
+    type: ['application/json', 'application/vnd.api+json'],
+    limit: '1mb',
+}));
+
 app.use(cors());
 app.use(
     pino({
@@ -27,6 +49,14 @@ app.use(
     }),
 );
 
+app.use(notesRoutes);
+app.use(notFoundHandler);
+app.use(errorHandler);
+
+
+await connectMongoDB();
+
+
 app.get('/', (req, res) => {
     res.json({
         message: 'Welcome to the API!'
@@ -34,16 +64,23 @@ app.get('/', (req, res) => {
 });
 
 
-app.get('/notes', (req, res) => {
+app.get('/notes', async (req, res) => {
+    const notes = await Note.find();
     res.status(200).json({
-        message: 'Retrieved all notes'
+        message: 'Retrieved all notes',
+        notes
     });
 });
 
 
-app.get('/notes/:noteId', (req, res) => {
+app.get('/notes/:noteId', async (req, res) => {
+    const {
+        noteId
+    } = req.params;
+    const note = await Note.findById(noteId);
     res.status(200).json({
-        message: 'Retrieved note with id: ' + req.params.noteId
+        message: 'Retrieved note with id: ' + noteId,
+        note
     });
 });
 
