@@ -16,10 +16,18 @@ import {
 import {
     connectMongoDB
 } from './db/connectMongoDB.js';
+import {
+    errors,
+} from 'celebrate';
+
 
 
 const PORT = Number(process.env.PORT) || 3000;
 const app = express();
+
+app.get('/test', (req, res) => {
+    res.send('Server is alive!');
+});
 
 
 app.use(logger);
@@ -31,11 +39,11 @@ app.use(
     })
 );
 
-
 app.use(notesRoutes);
 
 
 app.use(notFoundHandler);
+app.use(errors());
 app.use(errorHandler);
 
 const startServer = async () => {
