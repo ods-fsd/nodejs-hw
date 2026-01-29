@@ -1,7 +1,10 @@
 import {
-    Schema
+    Schema,
+    model
 } from "mongoose";
-import mongoose from "mongoose";
+import {
+    TAGS
+} from "../constants/tags.js";
 
 const noteSchema = new Schema({
     title: {
@@ -11,26 +14,21 @@ const noteSchema = new Schema({
     },
     content: {
         type: String,
-        required: true,
+        required: false,
+        default: "",
         trim: true,
     },
     tag: {
         type: String,
-        required: true,
-        enum: ["work", "personal", "shopping", "meeting", "ideas", "travel", "finance", "health", "important", "todo"],
+        required: false,
+        default: "Todo",
+        enum: TAGS
     },
-    createdAt: {
-        type: Date,
-        default: Date.now,
-        timestamps: true,
-    },
-    updatedAt: {
-        type: Date,
-        default: Date.now,
-        timestamps: true,
-    },
+}, {
+    timestamps: true,
+    versionKey: false
 });
 
-const Note = mongoose.model("Note", noteSchema);
+const Note = model("Note", noteSchema);
 
 export default Note;
