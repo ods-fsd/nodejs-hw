@@ -29,6 +29,6 @@ const noteSchema = new Schema({
     versionKey: false
 });
 
-const Note = model("Note", noteSchema);
+const Note = model("Note", noteSchema, "Notes");
 
 export default Note;
