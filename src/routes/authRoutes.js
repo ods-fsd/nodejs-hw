@@ -14,8 +14,13 @@ import {
     logoutUser,
     refreshUserSession
 } from "../controllers/authController.js";
+import {
+    authenticate
+} from "../middleware/authenticate.js";
 
 const router = Router();
+
+router.use(authenticate);
 
 router.post("/auth/register", celebrate(registerUserSchema), registerUser);
 router.post("/auth/login", celebrate(loginUserSchema), loginUser);
