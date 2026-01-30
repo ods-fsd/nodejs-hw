@@ -19,19 +19,18 @@ import {
 import {
     errors,
 } from 'celebrate';
-
+import authRoutes from './routes/authRoutes.js';
+import cookieParser from 'cookie-parser';
 
 
 const PORT = Number(process.env.PORT) || 3000;
 const app = express();
 
-app.get('/test', (req, res) => {
-    res.send('Server is alive!');
-});
-
 
 app.use(logger);
-app.use(cors());
+app.use(cors({
+    methods: ['GET', 'POST', 'PUT', 'PATCH', 'DELETE', 'OPTIONS'],
+}));
 app.use(
     express.json({
         type: ['application/json', 'application/vnd.api+json'],
@@ -39,8 +38,10 @@ app.use(
     })
 );
 
-app.use(notesRoutes);
+app.use(cookieParser());
 
+app.use(notesRoutes);
+app.use(authRoutes);
 
 app.use(notFoundHandler);
 app.use(errors());
