@@ -22,7 +22,7 @@ export const registerUser = async (req, res) => {
         email
     });
     if (existingUser) {
-        throw createHttpError(400, "User already exists");
+        throw createHttpError(400, "Email in use");
     }
 
     const hashedPassword = await bcrypt.hash(password, 10);
