@@ -23,11 +23,6 @@ export const saveFileToCloudinary = async (buffer) => {
             resource_type: "image",
             unique_filename: true,
             use_filename: true,
-            transformation: [{
-                width: 250,
-                height: 250,
-                crop: "fill"
-            }],
         }, (error, result) => {
             error ? reject(error) : resolve(result);
         });
