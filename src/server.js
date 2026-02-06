@@ -1,8 +1,7 @@
 import express from 'express';
 import cors from 'cors';
 import 'dotenv/config';
-
-
+import userRoutes from './routes/userRoutes.js';
 import notesRoutes from './routes/notesRoutes.js';
 import {
     logger
@@ -42,6 +41,7 @@ app.use(cookieParser());
 
 app.use(notesRoutes);
 app.use(authRoutes);
+app.use(userRoutes);
 
 app.use(notFoundHandler);
 app.use(errors());
