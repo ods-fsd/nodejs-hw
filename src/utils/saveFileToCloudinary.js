@@ -14,19 +14,13 @@ cloudinary.config({
 
 
 
-export const saveFileToCloudinary = async (buffer, userId) => {
+export const saveFileToCloudinary = async (buffer) => {
 
     return new Promise((resolve, reject) => {
         const uploadStream = cloudinary.uploader.upload_stream({
-            folder: "user-avatars",
             resource_type: "image",
-            public_id: `avatar_${userId}`,
-            overwrite: true,
-            transformation: [{
-                width: 250,
-                height: 250,
-                crop: "fill"
-            }],
+            unique_filename: true,
+            use_filename: true,
         }, (error, result) => {
             error ? reject(error) : resolve(result);
         });

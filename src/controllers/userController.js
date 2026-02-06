@@ -13,7 +13,7 @@ export const updateUserAvatar = async (req, res) => {
         throw createHttpError(400, 'No file uploaded');
     }
 
-    const result = await saveFileToCloudinary(req.file.buffer, req.user.id);
+    const result = await saveFileToCloudinary(req.file.buffer);
 
     const updatedUser = await User.findOneAndUpdate({
         _id: req.user.id
